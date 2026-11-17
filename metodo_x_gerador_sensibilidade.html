@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090910">
+<title>Método X | Gerador de Sensibilidade</title>
+<style>
+:root{--bg:#08080e;--panel:#14131d;--line:#343142;--muted:#9293a8;--cyan:#12c9f4;--purple:#7855ff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 5%,#21183d 0,transparent 42%),var(--bg);color:#f6f5ff;font:16px system-ui,-apple-system,Segoe UI,sans-serif;padding:22px 14px 40px}
+.wrap{max-width:680px;margin:auto}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px}.stat,.panel,.tile{background:linear-gradient(145deg,#211c35aa,#111116);border:1px solid var(--line);border-radius:18px}.stat{text-align:center;padding:15px 6px}.stat b{font-size:23px}.stat small{display:block;color:var(--muted);font-weight:700;letter-spacing:1px;margin-top:5px}
+.panel{padding:18px;border-radius:28px;box-shadow:0 0 35px #7955ff20;margin-bottom:18px}.tabs{display:grid;grid-template-columns:1fr 1fr;background:#09090e;border:1px solid #292735;border-radius:17px;padding:6px;gap:6px;margin-bottom:22px}.tab{border:0;border-radius:13px;padding:14px 8px;background:transparent;color:#a5a5b7;font-size:16px;font-weight:800}.tab.active,.primary{background:linear-gradient(110deg,var(--purple),var(--cyan));color:white;box-shadow:0 8px 24px #6752ff40}
+.section{margin:18px 0}.step{color:#a8a5bb;font-size:13px;font-weight:800;letter-spacing:1.5px;margin:0 0 12px}.step span{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:9px;background:#30245b;border:1px solid #7055d9;color:#d7ceff;margin-right:8px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}.chip,.style{border:1px solid #393746;background:#1a1922;color:#d5d5e2;border-radius:14px;padding:11px 14px;font-size:14px}.chip.active,.style.active{border-color:#8565ff;background:linear-gradient(145deg,#30215a,#142a37);box-shadow:0 0 15px #7655ff30}
+input,select{width:100%;background:#09090e;border:1px solid #373543;border-radius:15px;color:white;padding:16px;font-size:16px;outline:none}input:focus,select:focus{border-color:#8062ff}
+.detect,.primary{width:100%;border:0;border-radius:16px;padding:17px;font-weight:850;font-size:16px;margin-top:12px}.detect{background:#211f28;color:#d7d7e5;border:1px solid #393746}
+.styles{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.style{padding:18px 5px;font-weight:800}.style small{display:block;color:var(--muted);font-weight:500;margin-top:7px}
+.result{display:none;margin-top:18px}.values{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.value{background:#1b1926;border:1px solid #373344;border-radius:14px;padding:13px}.value span{display:block;color:#a5a2b8;font-size:12px;font-weight:800}.value b{font-size:24px}.value:last-child{grid-column:1/-1}
+.note{color:#88889c;font-size:12px;line-height:1.5;margin:18px 5px}.store{display:block;text-align:center;text-decoration:none;color:white;font-weight:900;font-size:18px;padding:22px 12px;border-radius:22px;background:linear-gradient(100deg,#ff9e08,#ff286b);box-shadow:0 12px 30px #ff386b30}.store small{display:block;font-size:12px;letter-spacing:1px;margin-top:5px}
+.option{display:flex;justify-content:space-between;align-items:center;padding:15px;border:1px solid #373344;background:#1a1922;border-radius:15px;margin:10px 0}.option small{display:block;color:var(--muted);margin-top:4px}.switch{width:48px;height:27px;accent-color:#7655ff}
+.hide{display:none!important}
+@media(max-width:390px){body{padding:14px 10px}.panel{padding:14px}.styles{gap:6px}.style{font-size:13px}}
+</style>
+</head>
+<body><main class="wrap">
+<div class="stats"><div class="stat"><b>30+</b><small>MARCAS</small></div><div class="stat"><b>100%</b><small>GRÁTIS</small></div><div class="stat"><b>FF</b><small>GERADOR</small></div></div>
+<section class="panel">
+<div class="tabs"><button class="tab active" id="sensTab">◎ Sensibilidade</button><button class="tab" id="optTab">ϟ Otimizar</button></div>
+<div id="sensView">
+<div class="section"><p class="step"><span>1</span>ESCOLHA A MARCA</p><div class="chips" id="brands">
+<button class="chip active">Todas</button><button class="chip">Apple</button><button class="chip">Samsung</button><button class="chip">Xiaomi</button><button class="chip">Motorola</button><button class="chip">Realme</button><button class="chip">Outra</button>
+</div></div>
+<div class="section"><p class="step"><span>2</span>ESCOLHA O MODELO</p><input id="model" placeholder="Digite o modelo do seu celular..."><button class="detect" id="detect">▯ Detectar informações do navegador</button></div>
+<div class="section"><p class="step"><span>3</span>ESTILO DE JOGO</p><div class="styles" id="styles"><button class="style" data-style="rush">ϟ<small>Rush</small></button><button class="style active" data-style="equilibrio">⚖<small>Equilíbrio</small></button><button class="style" data-style="sniper">◎<small>Sniper</small></button></div></div>
+<button class="primary" id="generate">✧ GERAR SENSIBILIDADE</button>
+<div class="result" id="result"><p class="step">SUA CONFIGURAÇÃO SUGERIDA</p><div class="values" id="values"></div><button class="detect" id="copy">▣ COPIAR CONFIGURAÇÃO</button></div>
+</div>
+<div id="optView" class="hide"><p class="step">AJUSTES E DICAS PARA O APARELHO</p>
+<div class="option"><div><b>Calibrar sensibilidade</b><small>Teste o toque e ajuste no jogo</small></div><input class="switch" type="checkbox"></div>
+<div class="option"><div><b>Reduzir aplicativos em segundo plano</b><small>Feche apps que não estiver usando</small></div><input class="switch" type="checkbox"></div>
+<div class="option"><div><b>Modo de desempenho</b><small>Se disponível nas configurações do celular</small></div><input class="switch" type="checkbox"></div>
+<div class="option"><div><b>Estabilizar a taxa de quadros</b><small>Use configurações gráficas compatíveis</small></div><input class="switch" type="checkbox"></div>
+<p class="note">Essas opções são lembretes. Um site aberto no Chrome não consegue alterar diretamente o DPI, FPS ou as configurações internas do celular.</p>
+</div>
+</section>
+<a class="store" href="#" onclick="alert('Adicione aqui o link da sua loja Método X.');return false">🛍 CONHEÇA OS PRODUTOS MÉTODO X <small>SUA LOJA AQUI</small></a>
+<p class="note">As sensibilidades são sugestões iniciais e podem precisar de ajustes conforme o aparelho, a versão do jogo e sua preferência. O gerador não altera o jogo nem modifica o DPI do celular automaticamente.</p>
+</main>
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+let style='equilibrio',brand='Todas',last='';
+$('#brands').addEventListener('click',e=>{if(!e.target.matches('button'))return;$$('#brands button').forEach(b=>b.classList.toggle('active',b===e.target));brand=e.target.textContent});
+$('#styles').addEventListener('click',e=>{let b=e.target.closest('button[data-style]');if(!b)return;style=b.dataset.style;$$('.style').forEach(x=>x.classList.toggle('active',x===b))});
+$('#detect').onclick=()=>{$('#model').value=(navigator.userAgentData?.platform||navigator.platform||'Aparelho não identificado')+' (modelo não disponível pelo navegador)'};
+$('#sensTab').onclick=()=>{ $('#sensTab').classList.add('active');$('#optTab').classList.remove('active');$('#sensView').classList.remove('hide');$('#optView').classList.add('hide')};
+$('#optTab').onclick=()=>{ $('#optTab').classList.add('active');$('#sensTab').classList.remove('active');$('#optView').classList.remove('hide');$('#sensView').classList.add('hide')};
+function rand(min,max){return Math.floor(Math.random()*(max-min+1))+min}
+$('#generate').onclick=()=>{
+ let base=style==='rush'?{g:[185,200],p:[180,195],x2:[175,190],x4:[165,185],awm:[45,75],look:[170,200],dpi:[450,650]}:style==='sniper'?{g:[150,180],p:[140,170],x2:[130,160],x4:[110,145],awm:[35,60],look:[100,140],dpi:[380,550]}:{g:[170,190],p:[165,185],x2:[155,180],x4:[145,170],awm:[40,65],look:[140,175],dpi:[400,600]};
+ let labels=[['Geral','g'],['Ponto vermelho','p'],['Mira 2X','x2'],['Mira 4X','x4'],['Mira AWM','awm'],['Olhadinha','look'],['DPI sugerido','dpi']];
+ last=labels.map(([n,k])=>n+': '+rand(...base[k])).join('\\n');
+ $('#values').innerHTML=labels.map(([n,k])=>{let v=last.split('\\n').find(x=>x.startsWith(n+':')).split(': ')[1];return `<div class="value"><span>${n.toUpperCase()}</span><b>${v}</b></div>`}).join('');
+ $('#result').style.display='block';
+};
+$('#copy').onclick=async()=>{try{await navigator.clipboard.writeText(last);$('#copy').textContent='✓ CONFIGURAÇÃO COPIADA'}catch(e){$('#copy').textContent='Selecione e copie os valores'}};
+</script></body></html>
